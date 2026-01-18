@@ -722,14 +722,14 @@ function App() {
         )}
 
         {!stats && !profileStats && !loading && !error && (
-          <div className="mt-20 text-center py-16">
-            <div className="mx-auto w-32 h-32 bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
-              <RefreshCw className="w-16 h-16 text-blue-500 dark:text-blue-400 opacity-60" />
+          <div className="mt-16 text-center py-12">
+            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+              <RefreshCw className="w-10 h-10 text-blue-500 dark:text-blue-400 opacity-60" />
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               No data to display
             </h3>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed font-light">
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed font-light">
               {inputMode === "repository"
                 ? "Enter a GitHub repository URL and select a time period to analyze contributions and pull requests."
                 : "Enter a GitHub username to view their profile, repositories, and contribution statistics."}
