@@ -5,7 +5,10 @@ export interface ContributorStats {
   mergedPRs: number;
   openPRs: number;
   closedPRs: number;
-  isMaintainer: boolean; // Change from optional to required
+  isMaintainer: boolean;
+  additions?: number;
+  deletions?: number;
+  commits?: number;
 }
 
 export interface PullRequest {
