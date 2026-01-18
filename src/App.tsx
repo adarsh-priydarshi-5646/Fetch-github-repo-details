@@ -519,7 +519,7 @@ function App() {
                             {contributor.closedPRs} closed
                           </span>
                         </div>
-                        {codeStats[contributor.username] && (
+                        {codeStats[contributor.username] ? (
                           <>
                             <div className="flex items-center gap-1.5">
                               <Plus className="w-4 h-4 text-green-600" />
@@ -540,7 +540,7 @@ function App() {
                               </span>
                             </div>
                           </>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                   </button>

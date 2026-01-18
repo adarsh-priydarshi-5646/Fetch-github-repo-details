@@ -532,17 +532,32 @@ export const fetchCodeStats = async (repoUrl: string): Promise<{
     setLoadingProgress?.("Fetching code statistics...");
     
     try {
-      // Use contributors endpoint which is much faster
-      const { data: contributors } = await octokit.request('GET /repos/{owner}/{repo}/contributors', {
-        owner: repoInfo.owner,
-        repo: repoInfo.repo,
-        per_page: 100,
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      });
+      // Fetch all contributors with pagination
+      const allContributors: Array<{ login: string; contributions: number; avatar_url: string }> = [];
+      let page = 1;
+      let hasMore = true;
 
-      const contributorStats = contributors.map((c: { login: string; contributions: number; avatar_url: string }) => ({
+      while (hasMore && page <= 10) { // Limit to 10 pages (1000 contributors)
+        const { data: contributors } = await octokit.request('GET /repos/{owner}/{repo}/contributors', {
+          owner: repoInfo.owner,
+          repo: repoInfo.repo,
+          per_page: 100,
+          page,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+
+        if (contributors.length === 0) {
+          hasMore = false;
+          break;
+        }
+
+        allContributors.push(...contributors);
+        page++;
+      }
+
+      const contributorStats = allContributors.map((c: { login: string; contributions: number; avatar_url: string }) => ({
         username: c.login,
         additions: c.contributions * 10,
         deletions: c.contributions * 5,
@@ -552,6 +567,8 @@ export const fetchCodeStats = async (repoUrl: string): Promise<{
 
       const totalAdditions = contributorStats.reduce((sum: number, c: { additions: number }) => sum + c.additions, 0);
       const totalDeletions = contributorStats.reduce((sum: number, c: { deletions: number }) => sum + c.deletions, 0);
+
+      console.log(`Fetched code stats for ${contributorStats.length} contributors`);
 
       return {
         contributors: contributorStats,
