@@ -469,3 +469,91 @@ export const fetchUserStats = async (username: string, timeFilter: TimeFilter): 
     };
   });
 };
+
+export const fetchCodeStats = async (repoUrl: string): Promise<{
+  contributors: Array<{ username: string; additions: number; deletions: number; commits: number; avatarUrl: string }>;
+  totalAdditions: number;
+  totalDeletions: number;
+  repoName: string;
+  repoUrl: string;
+}> => {
+  const repoInfo = parseGitHubUrl(repoUrl);
+  
+  if (!repoInfo) {
+    throw new Error('Invalid GitHub repository URL');
+  }
+
+  const cacheKey = `code_stats_${repoInfo.owner}_${repoInfo.repo}`;
+  return getCachedOrFetch(cacheKey, async () => {
+    const octokit = createOctokit();
+    
+    setLoadingProgress?.("Fetching code statistics...");
+    
+    try {
+      const { data: commits } = await octokit.request('GET /repos/{owner}/{repo}/commits', {
+        owner: repoInfo.owner,
+        repo: repoInfo.repo,
+        per_page: 100,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      });
+
+      const contributorStats: { [key: string]: { additions: number; deletions: number; commits: number; avatarUrl: string } } = {};
+      let totalAdditions = 0;
+      let totalDeletions = 0;
+
+      for (const commit of commits) {
+        const author = commit.commit.author?.name || commit.author?.login || 'Unknown';
+        const avatarUrl = commit.author?.avatar_url || '';
+
+        if (!contributorStats[author]) {
+          contributorStats[author] = {
+            additions: 0,
+            deletions: 0,
+            commits: 0,
+            avatarUrl
+          };
+        }
+
+        contributorStats[author].commits++;
+
+        // Fetch detailed commit info to get additions/deletions
+        try {
+          const { data: commitDetail } = await octokit.request('GET /repos/{owner}/{repo}/commits/{ref}', {
+            owner: repoInfo.owner,
+            repo: repoInfo.repo,
+            ref: commit.sha,
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          });
+
+          const additions = commitDetail.stats?.additions || 0;
+          const deletions = commitDetail.stats?.deletions || 0;
+
+          contributorStats[author].additions += additions;
+          contributorStats[author].deletions += deletions;
+          totalAdditions += additions;
+          totalDeletions += deletions;
+        } catch (error) {
+          console.warn(`Could not fetch details for commit ${commit.sha}:`, error);
+        }
+      }
+
+      return {
+        contributors: Object.entries(contributorStats).map(([username, stats]) => ({
+          username,
+          ...stats
+        })),
+        totalAdditions,
+        totalDeletions,
+        repoName: `${repoInfo.owner}/${repoInfo.repo}`,
+        repoUrl: `https://github.com/${repoInfo.owner}/${repoInfo.repo}`
+      };
+    } catch (error) {
+      console.error("Error fetching code statistics:", error);
+      throw error;
+    }
+  });
+};
