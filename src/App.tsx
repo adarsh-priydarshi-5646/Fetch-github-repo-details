@@ -103,6 +103,14 @@ function App() {
 
     try {
       const data = await fetchRepoStats(repoUrl, timeFilter);
+      
+      if (!data || data.contributors.length === 0) {
+        setError("No pull request data found for this repository. Try a different time period or repository.");
+        setLoading(false);
+        setLoadingProgress("");
+        return;
+      }
+      
       setStats(data);
       
       // Fetch code statistics
@@ -123,11 +131,9 @@ function App() {
       
       setLoadingProgress("");
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Failed to fetch repository statistics"
-      );
+      const errorMsg = err instanceof Error ? err.message : "Failed to fetch repository statistics";
+      setError(errorMsg);
+      console.error("Fetch error:", err);
     } finally {
       setLoading(false);
     }

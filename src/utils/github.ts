@@ -107,9 +107,15 @@ async function fetchMaintainers(octokit: Octokit, owner: string, repo: string): 
   }
   
   try {
-    setLoadingProgress?.("Fetching collaborators...");
+    setLoadingProgress?.("Fetching repository collaborators...");
+    
+    // Create a timeout promise
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Collaborators fetch timeout')), 10000)
+    );
+    
     // Use explicit 'all' permission parameter to ensure we get everyone with push access
-    const { data: collaborators } = await octokit.request('GET /repos/{owner}/{repo}/collaborators', {
+    const fetchPromise = octokit.request('GET /repos/{owner}/{repo}/collaborators', {
       owner,
       repo,
       affiliation: 'all',
@@ -118,6 +124,8 @@ async function fetchMaintainers(octokit: Octokit, owner: string, repo: string): 
         'X-GitHub-Api-Version': '2022-11-28'
       }
     });
+    
+    const { data: collaborators } = await Promise.race([fetchPromise, timeoutPromise]) as { data: Array<{ permissions?: { push?: boolean; admin?: boolean }; login: string }> };
     
     // Create set of maintainers (users with push or admin access)
     const maintainers = new Set(
@@ -257,7 +265,11 @@ export const fetchRepoStats = async (repoUrl: string, timeFilter: TimeFilter): P
       }
     } catch (error) {
       console.error("Error fetching pull requests:", error);
-      // Continue with whatever we've fetched so far
+      // If we got an error and no PRs yet, throw it
+      if (pullRequests.length === 0) {
+        throw new Error(`Failed to fetch pull requests: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+      // Otherwise continue with whatever we've fetched so far
     }
 
     setLoadingProgress?.("Processing contributor data...");
