@@ -31,6 +31,7 @@ import { UserStatsModal } from "./components/UserStatsModal";
 import Logo from "./components/Logo";
 import Footer from "./components/Footer";
 import PullRequestList from "./components/PullRequestList";
+import CodeStats from "./components/CodeStats";
 import { TokenSettings } from "./components/TokenSettings";
 import { hasGitHubToken } from "./utils/env";
 
@@ -398,6 +399,20 @@ function App() {
 
         {stats && (
           <div className="space-y-10 animate-fadeIn">
+            <CodeStats
+              stats={stats.contributors.map((c) => ({
+                username: c.username,
+                additions: c.additions || 0,
+                deletions: c.deletions || 0,
+                commits: c.commits || 0,
+                avatarUrl: c.avatarUrl,
+              }))}
+              repoName={repoUrl}
+              repoUrl={`https://github.com/${repoUrl}`}
+              totalAdditions={stats.contributors.reduce((sum, c) => sum + (c.additions || 0), 0)}
+              totalDeletions={stats.contributors.reduce((sum, c) => sum + (c.deletions || 0), 0)}
+            />
+
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700 transition-colors duration-300 hover:shadow-lg">
               <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-2">
