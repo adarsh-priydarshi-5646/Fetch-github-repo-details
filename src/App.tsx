@@ -427,11 +427,30 @@ function App() {
                     Contributors
                   </h2>
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/70 px-3 py-1.5 rounded-full">
-                  Total contributors:{" "}
-                  <span className="font-semibold">
-                    {stats.contributors.length}
-                  </span>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Total Contributors</p>
+                  <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{stats.contributors.length}</p>
+                </div>
+                <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Lines Added</p>
+                  <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                    +{Object.values(codeStats).reduce((sum, s) => sum + s.additions, 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Lines Deleted</p>
+                  <p className="text-lg font-bold text-red-600 dark:text-red-400">
+                    -{Object.values(codeStats).reduce((sum, s) => sum + s.deletions, 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Total Commits</p>
+                  <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                    {Object.values(codeStats).reduce((sum, s) => sum + s.commits, 0).toLocaleString()}
+                  </p>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
