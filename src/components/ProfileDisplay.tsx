@@ -4,26 +4,18 @@ import {
   GitMerge,
   GitPullRequestClosed,
   Users,
-  Star,
-  Eye,
-  Heart,
   TrendingUp,
   Shield,
   Code2,
-  BarChart2,
-  Plus,
-  Minus,
 } from "lucide-react";
 import type { UserStats } from "../types";
 
 interface ProfileDisplayProps {
   stats: UserStats;
-  onUserClick?: (username: string) => void;
 }
 
 export const ProfileDisplay: React.FC<ProfileDisplayProps> = ({
   stats,
-  onUserClick,
 }) => {
   const topRepos = Object.entries(stats.repositories)
     .sort(([, a], [, b]) => b.totalPRs - a.totalPRs)

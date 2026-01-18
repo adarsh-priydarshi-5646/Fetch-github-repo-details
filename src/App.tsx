@@ -24,10 +24,6 @@ import {
   Minus,
   User,
   Code2,
-  TrendingUp,
-  GitBranch,
-  Eye,
-  Heart,
 } from "lucide-react";
 import {
   fetchRepoStats,
