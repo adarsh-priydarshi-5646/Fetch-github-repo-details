@@ -324,7 +324,7 @@ function App() {
       <main className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 flex-grow">
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/40 dark:to-cyan-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold border border-blue-200 dark:border-blue-800/50 backdrop-blur-sm">
-            <span className="text-lg">📊</span>
+            <BarChart2 className="w-4 h-4" />
             <span>Repository Analytics</span>
           </div>
           <h1 className="text-6xl md:text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 mb-6 leading-tight">
