@@ -327,10 +327,10 @@ function App() {
             <BarChart2 className="w-4 h-4" />
             <span>Repository Analytics</span>
           </div>
-          <h1 className="text-6xl md:text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 mb-4 leading-tight">
             Analyze GitHub Repos
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
+          <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
             Discover active contributors, track pull requests, and analyze code changes with beautiful visualizations and detailed insights.
           </p>
         </div>
