@@ -275,6 +275,36 @@ export const fetchRepoStats = async (repoUrl: string, timeFilter: TimeFilter): P
     setLoadingProgress?.("Processing contributor data...");
     const contributorMap = new Map<string, ContributorStats>();
 
+    // If no PRs found, try to get contributors from the contributors endpoint
+    if (pullRequests.length === 0) {
+      console.log("No PRs found, fetching contributors from contributors endpoint...");
+      try {
+        const { data: contributors } = await octokit.request('GET /repos/{owner}/{repo}/contributors', {
+          owner: repoInfo.owner,
+          repo: repoInfo.repo,
+          per_page: 100,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+
+        contributors.forEach((contributor: { login: string; avatar_url: string; contributions: number }) => {
+          const isMaintainer = maintainers.has(contributor.login);
+          contributorMap.set(contributor.login, {
+            username: contributor.login,
+            avatarUrl: contributor.avatar_url,
+            totalPRs: 0,
+            mergedPRs: 0,
+            openPRs: 0,
+            closedPRs: 0,
+            isMaintainer
+          });
+        });
+      } catch (error) {
+        console.warn("Could not fetch contributors:", error);
+      }
+    }
+
     // Process PRs more efficiently
     pullRequests.forEach((pr) => {
       const username = pr.user.login;

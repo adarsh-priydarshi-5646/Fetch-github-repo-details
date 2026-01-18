@@ -105,7 +105,7 @@ function App() {
       const data = await fetchRepoStats(repoUrl, timeFilter);
       
       if (!data || data.contributors.length === 0) {
-        setError("No pull request data found for this repository. Try a different time period or repository.");
+        setError("No contributors or pull request data found for this repository. Try a different repository.");
         setLoading(false);
         setLoadingProgress("");
         return;
