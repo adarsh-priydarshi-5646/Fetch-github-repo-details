@@ -45,7 +45,7 @@ export function Logo({ size = "md", showText = true }: LogoProps) {
         <span
           className={`font-bold ${textSizeClasses[size]} bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 transition-colors duration-300 group-hover:from-blue-600 group-hover:to-blue-400 dark:group-hover:from-blue-400 dark:group-hover:to-blue-300`}
         >
-          GSoC Spy
+          Fetch Repo Details
         </span>
       )}
     </div>
