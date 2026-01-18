@@ -36,8 +36,10 @@ import Footer from "./components/Footer";
 import PullRequestList from "./components/PullRequestList";
 import { TokenSettings } from "./components/TokenSettings";
 import { hasGitHubToken } from "./utils/env";
+import Landing from "./pages/Landing";
 
 function App() {
+  const [showLanding, setShowLanding] = useState(true);
   const [repoUrl, setRepoUrl] = useState("");
   const [stats, setStats] = useState<RepoStats | null>(null);
   const [loading, setLoading] = useState(false);
@@ -172,7 +174,15 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      {showTokenNotification && (
+      {showLanding ? (
+        <Landing 
+          onGetStarted={() => setShowLanding(false)} 
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
+      ) : (
+        <>
+          {showTokenNotification && (
         <div className="fixed bottom-4 right-4 max-w-md z-50 animate-fadeIn">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
             <div className="flex items-start gap-3">
@@ -218,7 +228,12 @@ function App() {
       <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <Logo size="md" />
+            <button
+              onClick={() => setShowLanding(true)}
+              className="hover:opacity-80 transition-opacity"
+            >
+              <Logo size="md" />
+            </button>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -622,6 +637,8 @@ function App() {
       />
 
       <Footer />
+        </>
+      )}
     </div>
   );
 }
