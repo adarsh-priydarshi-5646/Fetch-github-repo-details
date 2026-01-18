@@ -46,10 +46,10 @@ export default function Landing({ onGetStarted, darkMode, setDarkMode }: Landing
         <section className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 mb-6">
-              Analyze GitHub Repositories
+              Analyze GitHub Repositories & Profiles
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-              Discover active contributors, track pull requests, and analyze code changes across any GitHub repository in seconds.
+              Discover active contributors, track pull requests, analyze code changes, and explore developer profiles across any GitHub repository in seconds.
             </p>
             <button
               onClick={onGetStarted}
@@ -117,49 +117,91 @@ export default function Landing({ onGetStarted, darkMode, setDarkMode }: Landing
               How to Use
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Step 1 */}
-              <div className="relative">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 text-white font-bold mb-4">
-                  1
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  Enter Repository
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Paste any GitHub repository URL or use the format{" "}
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-sm">
-                    owner/repo
-                  </code>
-                </p>
-                <div className="hidden md:block absolute top-16 -right-4 w-8 h-0.5 bg-gradient-to-r from-blue-600 to-transparent"></div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="relative">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 text-white font-bold mb-4">
-                  2
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  Select Time Period
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Choose from 2 weeks, 1 month, 3 months, 6 months, or all time to filter results
-                </p>
-                <div className="hidden md:block absolute top-16 -right-4 w-8 h-0.5 bg-gradient-to-r from-blue-600 to-transparent"></div>
-              </div>
-
-              {/* Step 3 */}
+            <div className="grid md:grid-cols-2 gap-12 mb-12">
+              {/* Repository Mode */}
               <div>
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 text-white font-bold mb-4">
-                  3
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  View Analytics
+                <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-6 flex items-center gap-2">
+                  <Code className="w-5 h-5" />
+                  Repository Mode
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  See contributor stats, code changes, and pull request details instantly
-                </p>
+                <div className="space-y-6">
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex-shrink-0">
+                      1
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Enter Repository URL</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Use format: <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-xs">owner/repo</code>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex-shrink-0">
+                      2
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Select Time Period</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Choose from 2 weeks to all time
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex-shrink-0">
+                      3
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">View Analytics</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        See contributors, PRs, and code stats
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Profile Mode */}
+              <div>
+                <h3 className="text-xl font-bold text-purple-600 dark:text-purple-400 mb-6 flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Profile Mode
+                </h3>
+                <div className="space-y-6">
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-purple-600 text-white font-bold flex-shrink-0">
+                      1
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Enter GitHub Username</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Use username or profile URL
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-purple-600 text-white font-bold flex-shrink-0">
+                      2
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Select Time Period</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Filter contributions by time range
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-purple-600 text-white font-bold flex-shrink-0">
+                      3
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Explore Profile</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        See all repos and contribution stats
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -284,7 +326,19 @@ export default function Landing({ onGetStarted, darkMode, setDarkMode }: Landing
               <li className="flex gap-3">
                 <span className="font-bold">•</span>
                 <span>
-                  <strong>Click Contributors:</strong> Click on any contributor card to see their detailed statistics across all repositories
+                  <strong>Repository Mode:</strong> Analyze any repository to see all contributors and their contribution statistics
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold">•</span>
+                <span>
+                  <strong>Profile Mode:</strong> Search for any GitHub user to see their profile, repositories, and total contributions
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold">•</span>
+                <span>
+                  <strong>Click Contributors:</strong> In repository mode, click on any contributor card to see their detailed statistics
                 </span>
               </li>
               <li className="flex gap-3">

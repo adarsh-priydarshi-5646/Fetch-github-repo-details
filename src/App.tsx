@@ -22,6 +22,12 @@ import {
   Check,
   Plus,
   Minus,
+  User,
+  Code2,
+  TrendingUp,
+  GitBranch,
+  Eye,
+  Heart,
 } from "lucide-react";
 import {
   fetchRepoStats,
@@ -31,6 +37,7 @@ import {
 } from "./utils/github";
 import type { RepoStats, UserStats, TimeFilter } from "./types";
 import { UserStatsModal } from "./components/UserStatsModal";
+import { ProfileDisplay } from "./components/ProfileDisplay";
 import Logo from "./components/Logo";
 import Footer from "./components/Footer";
 import PullRequestList from "./components/PullRequestList";
@@ -38,10 +45,15 @@ import { TokenSettings } from "./components/TokenSettings";
 import { hasGitHubToken } from "./utils/env";
 import Landing from "./pages/Landing";
 
+type InputMode = "repository" | "profile";
+
 function App() {
   const [showLanding, setShowLanding] = useState(true);
+  const [inputMode, setInputMode] = useState<InputMode>("repository");
   const [repoUrl, setRepoUrl] = useState("");
+  const [profileUsername, setProfileUsername] = useState("");
   const [stats, setStats] = useState<RepoStats | null>(null);
+  const [profileStats, setProfileStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [timeFilter, setTimeFilter] = useState<TimeFilter>("1m");
@@ -100,44 +112,61 @@ function App() {
     setLoading(true);
     setError(null);
     setStats(null);
+    setProfileStats(null);
     setShowPRs(false);
-    setLoadingProgress("Fetching repository data...");
 
-    try {
-      const data = await fetchRepoStats(repoUrl, timeFilter);
-      
-      if (!data || data.contributors.length === 0) {
-        setError("No contributors or pull request data found for this repository. Try a different repository.");
-        setLoading(false);
-        setLoadingProgress("");
-        return;
-      }
-      
-      setStats(data);
-      
-      // Fetch code statistics
+    if (inputMode === "repository") {
+      setLoadingProgress("Fetching repository data...");
       try {
-        const stats = await fetchCodeStats(repoUrl);
-        const statsMap: { [key: string]: { additions: number; deletions: number; commits: number } } = {};
-        stats.contributors.forEach((c: { username: string; additions: number; deletions: number; commits: number }) => {
-          statsMap[c.username] = {
-            additions: c.additions,
-            deletions: c.deletions,
-            commits: c.commits
-          };
-        });
-        setCodeStats(statsMap);
-      } catch (statsErr) {
-        console.warn("Could not fetch code stats:", statsErr);
+        const data = await fetchRepoStats(repoUrl, timeFilter);
+        
+        if (!data || data.contributors.length === 0) {
+          setError("No contributors or pull request data found for this repository. Try a different repository.");
+          setLoading(false);
+          setLoadingProgress("");
+          return;
+        }
+        
+        setStats(data);
+        
+        // Fetch code statistics
+        try {
+          const stats = await fetchCodeStats(repoUrl);
+          const statsMap: { [key: string]: { additions: number; deletions: number; commits: number } } = {};
+          stats.contributors.forEach((c: { username: string; additions: number; deletions: number; commits: number }) => {
+            statsMap[c.username] = {
+              additions: c.additions,
+              deletions: c.deletions,
+              commits: c.commits
+            };
+          });
+          setCodeStats(statsMap);
+        } catch (statsErr) {
+          console.warn("Could not fetch code stats:", statsErr);
+        }
+        
+        setLoadingProgress("");
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : "Failed to fetch repository statistics";
+        setError(errorMsg);
+        console.error("Fetch error:", err);
+      } finally {
+        setLoading(false);
       }
-      
-      setLoadingProgress("");
-    } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : "Failed to fetch repository statistics";
-      setError(errorMsg);
-      console.error("Fetch error:", err);
-    } finally {
-      setLoading(false);
+    } else {
+      // Profile mode
+      setLoadingProgress("Fetching profile data...");
+      try {
+        const userStats = await fetchUserStats(profileUsername, timeFilter);
+        setProfileStats(userStats);
+        setLoadingProgress("");
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : "Failed to fetch profile statistics";
+        setError(errorMsg);
+        console.error("Fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -310,13 +339,51 @@ function App() {
           onSubmit={handleSubmit}
           className="bg-gradient-to-br from-white via-blue-50/30 to-white dark:from-gray-800 dark:via-gray-800/80 dark:to-gray-800 rounded-3xl shadow-2xl p-8 md:p-10 mb-16 transition-all duration-500 border border-gray-200 dark:border-gray-700/50 hover:shadow-3xl hover:border-blue-300 dark:hover:border-blue-700/50 group"
         >
+          {/* Mode Toggle */}
+          <div className="mb-8 flex gap-2 bg-gray-100 dark:bg-gray-700/50 p-1.5 rounded-xl w-fit">
+            <button
+              type="button"
+              onClick={() => {
+                setInputMode("repository");
+                setError(null);
+                setStats(null);
+                setProfileStats(null);
+              }}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all duration-300 ${
+                inputMode === "repository"
+                  ? "bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-md"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              }`}
+            >
+              <Code2 className="w-4 h-4" />
+              <span>Repository</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setInputMode("profile");
+                setError(null);
+                setStats(null);
+                setProfileStats(null);
+              }}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all duration-300 ${
+                inputMode === "profile"
+                  ? "bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-md"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              }`}
+            >
+              <User className="w-4 h-4" />
+              <span>Profile</span>
+            </button>
+          </div>
+
           <div className="flex flex-col md:flex-row gap-5">
             <div className="flex-1">
               <label
-                htmlFor="repoUrl"
+                htmlFor={inputMode === "repository" ? "repoUrl" : "profileUsername"}
                 className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 tracking-wide"
               >
-                Repository URL or Path
+                {inputMode === "repository" ? "Repository URL or Path" : "GitHub Username or Profile URL"}
               </label>
               <div className="relative rounded-xl shadow-md overflow-hidden group/input">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
@@ -325,15 +392,27 @@ function App() {
                     aria-hidden="true"
                   />
                 </div>
-                <input
-                  id="repoUrl"
-                  type="text"
-                  value={repoUrl}
-                  onChange={(e) => setRepoUrl(e.target.value)}
-                  placeholder="github.com/owner/repo"
-                  className="block w-full rounded-xl border-0 py-3.5 pl-12 pr-4 text-gray-900 dark:text-white dark:bg-gray-700/60 ring-1 ring-inset ring-gray-300 dark:ring-gray-600/50 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 text-ellipsis font-medium"
-                  required
-                />
+                {inputMode === "repository" ? (
+                  <input
+                    id="repoUrl"
+                    type="text"
+                    value={repoUrl}
+                    onChange={(e) => setRepoUrl(e.target.value)}
+                    placeholder="github.com/owner/repo"
+                    className="block w-full rounded-xl border-0 py-3.5 pl-12 pr-4 text-gray-900 dark:text-white dark:bg-gray-700/60 ring-1 ring-inset ring-gray-300 dark:ring-gray-600/50 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 text-ellipsis font-medium"
+                    required
+                  />
+                ) : (
+                  <input
+                    id="profileUsername"
+                    type="text"
+                    value={profileUsername}
+                    onChange={(e) => setProfileUsername(e.target.value)}
+                    placeholder="username or github.com/username"
+                    className="block w-full rounded-xl border-0 py-3.5 pl-12 pr-4 text-gray-900 dark:text-white dark:bg-gray-700/60 ring-1 ring-inset ring-gray-300 dark:ring-gray-600/50 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 text-ellipsis font-medium"
+                    required
+                  />
+                )}
               </div>
             </div>
             <div className="w-full md:w-56">
@@ -638,7 +717,11 @@ function App() {
           </div>
         )}
 
-        {!stats && !loading && !error && (
+        {profileStats && (
+          <ProfileDisplay stats={profileStats} onUserClick={handleUserClick} />
+        )}
+
+        {!stats && !profileStats && !loading && !error && (
           <div className="mt-20 text-center py-16">
             <div className="mx-auto w-32 h-32 bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
               <RefreshCw className="w-16 h-16 text-blue-500 dark:text-blue-400 opacity-60" />
@@ -647,7 +730,9 @@ function App() {
               No data to display
             </h3>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed font-light">
-              Enter a GitHub repository URL and select a time period to analyze contributions and pull requests.
+              {inputMode === "repository"
+                ? "Enter a GitHub repository URL and select a time period to analyze contributions and pull requests."
+                : "Enter a GitHub username to view their profile, repositories, and contribution statistics."}
             </p>
           </div>
         )}

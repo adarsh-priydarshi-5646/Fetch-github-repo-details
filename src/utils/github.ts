@@ -360,7 +360,25 @@ export const registerLoadingHandler = (handler: (message: string) => void) => {
   setLoadingProgress = handler;
 };
 
-export const fetchUserStats = async (username: string, timeFilter: TimeFilter): Promise<UserStats> => {
+export const fetchUserStats = async (usernameOrUrl: string, timeFilter: TimeFilter): Promise<UserStats> => {
+  // Parse username from URL or use directly
+  let username = usernameOrUrl.trim();
+  
+  // If it's a URL, extract the username
+  if (username.includes('github.com')) {
+    const match = username.match(/github\.com\/([A-Za-z0-9_.-]+)/);
+    if (match) {
+      username = match[1];
+    } else {
+      throw new Error('Invalid GitHub profile URL');
+    }
+  }
+  
+  // Validate username format
+  if (!/^[A-Za-z0-9_.-]+$/.test(username)) {
+    throw new Error('Invalid GitHub username format');
+  }
+
   const cacheKey = `user_${username}_${timeFilter}`;
   return getCachedOrFetch(cacheKey, async () => {
     // Use our new createOctokit function to get an authenticated instance

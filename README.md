@@ -1,70 +1,105 @@
 # Fetch GitHub Repo Details 🚀
 
 ## Overview
-Fetch GitHub Repo Details is an open-source web application designed to analyze GitHub repository contributions and track pull request activity. It helps identify active contributors in open-source projects, making it especially useful for mentors, organization administrators, and participants who want to assess engagement levels in various repositories.
+Fetch GitHub Repo Details is a modern, professional web application designed to analyze GitHub repositories and developer profiles. It helps you discover active contributors, track pull requests, analyze code changes, and explore developer profiles across any GitHub repository. Perfect for mentors, organization administrators, and anyone interested in understanding contribution patterns in open-source projects.
 
-## Features
+## ✨ Key Features
 
-### 1. GitHub Repository Analysis
-- Enter any GitHub repository URL to fetch and analyze pull requests.
-- Filter contributions by different time periods: **2 weeks, 1 month, 3 months, 6 months, or all time**.
-- Handles pagination for repositories with many PRs (up to **500 PRs across 5 pages**).
+### 🔀 Dual Input Modes
 
-### 2. Contributor Insights
-- Identify and distinguish between **project maintainers** and **regular contributors**.
+#### Repository Mode
+- Analyze any GitHub repository to fetch and analyze pull requests
+- Filter contributions by time periods: **2 weeks, 1 month, 3 months, 6 months, or all time**
+- Handles pagination for repositories with many PRs (up to **500 PRs across 5 pages**)
+- View all contributors with detailed statistics
+- Identify project maintainers vs regular contributors
+
+#### Profile Mode
+- Search for any GitHub user by username or profile URL
+- View comprehensive user profile with avatar and stats
+- See all repositories with contributions
+- Display top repositories by contribution count
+- View total contribution statistics across all repositories
+- Identify if user is a maintainer in any repository
+
+### 👥 Contributor Insights
+- Identify and distinguish between **project maintainers** and **regular contributors**
 - View detailed statistics for each contributor:
   - Total number of PRs
   - Number of merged PRs
   - Number of open PRs
   - Number of closed PRs
-- Sort contributors based on their **activity level**.
+  - Lines of code added/deleted
+  - Total commits
+- Sort contributors based on **activity level**
+- Click on any contributor to view their detailed profile
 
-### 3. Pull Request Tracking
-- View a **detailed list of recent PRs** in a repository.
-- See **PR status** (open, merged, closed).
-- Filter PRs by selected **time periods**.
-- Access **direct links** to PRs on GitHub.
+### 📊 Code Statistics
+- Track **lines of code added** by each contributor
+- Track **lines of code deleted** by each contributor
+- View **total commits** per contributor
+- Aggregate statistics across all contributors
+- Visual representation of code changes
 
-### 4. User Statistics
-- Click on any contributor to see **detailed contribution stats**.
-- View repository-specific **contribution metrics** for each user.
-- See all **recent PRs created by a specific user**.
-- Analyze the **distribution of PRs across different repositories**.
+### 🔗 Pull Request Tracking
+- View **detailed list of recent PRs** in a repository
+- See **PR status** (open, merged, closed)
+- Filter PRs by selected **time periods**
+- Access **direct links** to PRs on GitHub
+- Identify PR authors and their contribution status
 
-### 5. API Token Management
-- Option to add a **GitHub Personal Access Token** to increase API rate limits (**from 60 to 5,000 requests/hour**).
-- Tokens are **stored locally** for security (never sent to any server).
-- **Notification system** for users without tokens, encouraging them to add one for better performance.
+### 👤 User Statistics
+- Click on any contributor to see **detailed contribution stats**
+- View repository-specific **contribution metrics** for each user
+- See all **recent PRs created by a specific user**
+- Analyze the **distribution of PRs across different repositories**
+- View maintainer status across repositories
 
-### 6. Performance Optimizations
-- **In-memory caching system** to reduce redundant API calls.
-- **Maintainer status caching** (1-hour TTL).
-- **General data caching** (5-minute TTL).
-- **Deduplication** of in-flight requests to avoid unnecessary API requests.
-- **Request limiting** to prevent excessive API usage.
+### 🔐 API Token Management
+- Option to add a **GitHub Personal Access Token** to increase API rate limits (**from 60 to 5,000 requests/hour**)
+- Tokens are **stored locally** for security (never sent to any server)
+- **Notification system** for users without tokens
+- Easy token management interface
 
-### 7. User Interface Features
-- **Dark/light mode toggle** with persistent user preference.
-- **Responsive design** that works across all screen sizes.
-- **Loading indicators** with progress messages for long operations.
-- **Error handling** with clear, user-friendly messages.
-- **Collapsible sections** for better organization of information.
+### ⚡ Performance Optimizations
+- **In-memory caching system** to reduce redundant API calls
+- **Maintainer status caching** (1-hour TTL)
+- **General data caching** (5-minute TTL)
+- **Deduplication** of in-flight requests
+- **Request limiting** to prevent excessive API usage
+- Optimized pagination for large datasets
 
-### 8. Special Functionality
-- **Detection of repository maintainers** by checking for push/admin permissions.
-- **User status tracking** across multiple repositories.
-- **Repository ranking** for individual contributors.
-- **Graceful handling of API rate limits** to prevent service interruptions.
-- **Fallback mechanisms** for when GitHub data can't be fetched.
+### 🎨 Professional UI/UX
+- **Modern, clean design** with professional color scheme
+- **Dark/light mode toggle** with persistent user preference
+- **Responsive design** that works across all screen sizes
+- **Smooth animations and transitions**
+- **Subtle gradients and shadows** for depth
+- **Professional typography and hierarchy**
+- **Loading indicators** with progress messages
+- **Clear error messages** with helpful guidance
+- **Collapsible sections** for better organization
+- **All emojis replaced with lucide-react icons** for consistency
+
+### 🎯 Visual Enhancements
+- **Gradient backgrounds** for modern aesthetic
+- **Card-based layouts** with hover effects
+- **Color-coded statistics** (blue for PRs, green for merged, yellow for open, red for closed)
+- **Icon-based visual indicators** throughout the interface
+- **Professional badge system** for maintainer/contributor status
+- **Smooth transitions** between states
+- **Accessible color contrasts** for readability
 
 ## Tech Stack
-- **Frontend**: React, TypeScript, Tailwind CSS.
-- **API Integration**: Octokit (GitHub API).
-- **Utilities**: date-fns (for date manipulation and filtering).
+- **Frontend**: React 18, TypeScript, Tailwind CSS
+- **API Integration**: Octokit (GitHub API)
+- **Icons**: lucide-react (professional icon library)
+- **Utilities**: date-fns (for date manipulation and filtering)
+- **Build Tool**: Vite
 - **Performance Enhancements**:
-  - Custom caching layer for efficiency.
-  - Persistent storage for user preferences and tokens.
-  - Component-based architecture with a clean separation of concerns.
+  - Custom caching layer for efficiency
+  - Persistent storage for user preferences and tokens
+  - Component-based architecture with clean separation of concerns
 
 ## Getting Started
 
@@ -94,12 +129,38 @@ npm run build
 npm run preview
 ```
 
-## Contributing
-We welcome contributions! There are **good first issues** available for beginners who want to contribute. Here's how you can get started:
+## Usage Guide
 
-1. **Fork the repository** and create a new branch.
-2. **Pick an issue** from the [Issues tab](https://github.com/adarsh-priydarshi-5646/Fetch-github-repo-details/issues).
-3. **Implement the changes** and submit a pull request.
+### Repository Mode
+1. Click the **"Repository"** tab in the input form
+2. Enter a GitHub repository URL or use format: `owner/repo`
+3. Select a time period to filter contributions
+4. Click **"Get Statistics"** to analyze the repository
+5. View all contributors, their stats, and recent pull requests
+6. Click on any contributor card to see their detailed profile
+
+### Profile Mode
+1. Click the **"Profile"** tab in the input form
+2. Enter a GitHub username or profile URL
+3. Select a time period to filter contributions
+4. Click **"Get Statistics"** to view the profile
+5. See user profile card with avatar and total stats
+6. Browse top repositories and all repositories with contributions
+7. View detailed contribution statistics
+
+### Tips & Tricks
+- **Add GitHub Token**: Click "Add API Token" to increase rate limits from 60 to 5,000 requests/hour
+- **Click Contributors**: In repository mode, click on any contributor to see their detailed statistics
+- **Expand PRs**: Click "Recent Pull Requests" to see all PRs with merge status
+- **Time Filtering**: Use different time periods to see contribution trends
+- **Dark Mode**: Toggle dark mode for comfortable viewing in any lighting
+
+## Contributing
+We welcome contributions! Here's how you can get started:
+
+1. **Fork the repository** and create a new branch
+2. **Pick an issue** from the [Issues tab](https://github.com/adarsh-priydarshi-5646/Fetch-github-repo-details/issues)
+3. **Implement the changes** and submit a pull request
 4. **Wait for review and feedback!**
 
 ## Author
