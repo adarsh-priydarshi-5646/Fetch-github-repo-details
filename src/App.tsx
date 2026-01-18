@@ -15,23 +15,25 @@ import {
   ChevronDown,
   ChevronUp,
   Shield,
-  Star, // Star icon for the button
+  Star,
   KeyRound,
   AlertCircle,
   X,
   Check,
+  Plus,
+  Minus,
 } from "lucide-react";
 import {
   fetchRepoStats,
   fetchUserStats,
   registerLoadingHandler,
+  fetchCodeStats,
 } from "./utils/github";
 import type { RepoStats, UserStats, TimeFilter } from "./types";
 import { UserStatsModal } from "./components/UserStatsModal";
 import Logo from "./components/Logo";
 import Footer from "./components/Footer";
 import PullRequestList from "./components/PullRequestList";
-import CodeStats from "./components/CodeStats";
 import { TokenSettings } from "./components/TokenSettings";
 import { hasGitHubToken } from "./utils/env";
 
@@ -57,6 +59,7 @@ function App() {
   const [showTokenSettings, setShowTokenSettings] = useState(false);
   const [hasToken, setHasToken] = useState(false);
   const [showTokenNotification, setShowTokenNotification] = useState(false);
+  const [codeStats, setCodeStats] = useState<{ [key: string]: { additions: number; deletions: number; commits: number } }>({});
 
   useEffect(() => {
     // Register loading progress handler
@@ -101,6 +104,23 @@ function App() {
     try {
       const data = await fetchRepoStats(repoUrl, timeFilter);
       setStats(data);
+      
+      // Fetch code statistics
+      try {
+        const stats = await fetchCodeStats(repoUrl);
+        const statsMap: { [key: string]: { additions: number; deletions: number; commits: number } } = {};
+        stats.contributors.forEach((c: { username: string; additions: number; deletions: number; commits: number }) => {
+          statsMap[c.username] = {
+            additions: c.additions,
+            deletions: c.deletions,
+            commits: c.commits
+          };
+        });
+        setCodeStats(statsMap);
+      } catch (statsErr) {
+        console.warn("Could not fetch code stats:", statsErr);
+      }
+      
       setLoadingProgress("");
     } catch (err) {
       setError(
@@ -399,20 +419,6 @@ function App() {
 
         {stats && (
           <div className="space-y-10 animate-fadeIn">
-            <CodeStats
-              stats={stats.contributors.map((c) => ({
-                username: c.username,
-                additions: c.additions || 0,
-                deletions: c.deletions || 0,
-                commits: c.commits || 0,
-                avatarUrl: c.avatarUrl,
-              }))}
-              repoName={repoUrl}
-              repoUrl={`https://github.com/${repoUrl}`}
-              totalAdditions={stats.contributors.reduce((sum, c) => sum + (c.additions || 0), 0)}
-              totalDeletions={stats.contributors.reduce((sum, c) => sum + (c.deletions || 0), 0)}
-            />
-
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700 transition-colors duration-300 hover:shadow-lg">
               <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-2">
@@ -488,6 +494,28 @@ function App() {
                             {contributor.closedPRs} closed
                           </span>
                         </div>
+                        {codeStats[contributor.username] && (
+                          <>
+                            <div className="flex items-center gap-1.5">
+                              <Plus className="w-4 h-4 text-green-600" />
+                              <span className="text-gray-700 dark:text-gray-300">
+                                +{codeStats[contributor.username].additions}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <Minus className="w-4 h-4 text-red-600" />
+                              <span className="text-gray-700 dark:text-gray-300">
+                                -{codeStats[contributor.username].deletions}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <BarChart2 className="w-4 h-4 text-blue-600" />
+                              <span className="text-gray-700 dark:text-gray-300">
+                                {codeStats[contributor.username].commits} commits
+                              </span>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </button>
