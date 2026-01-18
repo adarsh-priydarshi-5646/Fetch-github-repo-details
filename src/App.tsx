@@ -292,57 +292,61 @@ function App() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 mb-3">
-            Fetch GitHub Repo Details
+      <main className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 flex-grow">
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/40 dark:to-cyan-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold border border-blue-200 dark:border-blue-800/50 backdrop-blur-sm">
+            <span className="text-lg">📊</span>
+            <span>Repository Analytics</span>
+          </div>
+          <h1 className="text-6xl md:text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 mb-6 leading-tight">
+            Analyze GitHub Repos
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Analyze GitHub repository contributions to discover active contributors and track their pull request activity across projects.
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
+            Discover active contributors, track pull requests, and analyze code changes with beautiful visualizations and detailed insights.
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-10 transition-colors duration-300 border border-gray-100 dark:border-gray-700 hover:shadow-lg"
+          className="bg-gradient-to-br from-white via-blue-50/30 to-white dark:from-gray-800 dark:via-gray-800/80 dark:to-gray-800 rounded-3xl shadow-2xl p-8 md:p-10 mb-16 transition-all duration-500 border border-gray-200 dark:border-gray-700/50 hover:shadow-3xl hover:border-blue-300 dark:hover:border-blue-700/50 group"
         >
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-5">
             <div className="flex-1">
               <label
                 htmlFor="repoUrl"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 tracking-wide"
               >
                 Repository URL or Path
               </label>
-              <div className="relative rounded-md shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <div className="relative rounded-xl shadow-md overflow-hidden group/input">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
                   <Search
-                    className="h-5 w-5 text-gray-400"
+                    className="h-5 w-5 text-gray-400 group-focus-within/input:text-blue-500 transition-colors duration-300"
                     aria-hidden="true"
                   />
                 </div>
                 <input
                   id="repoUrl"
-                  type="text" // Changed from url to text to accept all formats
+                  type="text"
                   value={repoUrl}
                   onChange={(e) => setRepoUrl(e.target.value)}
                   placeholder="github.com/owner/repo"
-                  className="block w-full rounded-md border-0 py-3 pl-10 text-gray-900 dark:text-white dark:bg-gray-700 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-colors duration-300 text-ellipsis"
+                  className="block w-full rounded-xl border-0 py-3.5 pl-12 pr-4 text-gray-900 dark:text-white dark:bg-gray-700/60 ring-1 ring-inset ring-gray-300 dark:ring-gray-600/50 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 text-ellipsis font-medium"
                   required
                 />
               </div>
             </div>
-            <div className="w-full md:w-48">
+            <div className="w-full md:w-56">
               <label
                 htmlFor="timeFilter"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 tracking-wide"
               >
                 Time Period
               </label>
-              <div className="relative rounded-md shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <div className="relative rounded-xl shadow-md overflow-hidden group/select">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
                   <BarChart2
-                    className="h-5 w-5 text-gray-400"
+                    className="h-5 w-5 text-gray-400 group-focus-within/select:text-blue-500 transition-colors duration-300"
                     aria-hidden="true"
                   />
                 </div>
@@ -350,7 +354,7 @@ function App() {
                   id="timeFilter"
                   value={timeFilter}
                   onChange={(e) => setTimeFilter(e.target.value as TimeFilter)}
-                  className="block w-full rounded-md border-0 py-3 pl-10 pr-10 text-gray-900 dark:text-white dark:bg-gray-700 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-colors duration-300 appearance-none"
+                  className="block w-full rounded-xl border-0 py-3.5 pl-12 pr-10 text-gray-900 dark:text-white dark:bg-gray-700/60 ring-1 ring-inset ring-gray-300 dark:ring-gray-600/50 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 appearance-none font-medium"
                 >
                   <option value="2w">2 Weeks</option>
                   <option value="1m">1 Month</option>
@@ -358,8 +362,8 @@ function App() {
                   <option value="6m">6 Months</option>
                   <option value="all">All Time</option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                  <ChevronDown className="h-4 w-4 text-gray-400" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                  <ChevronDown className="h-5 w-5 text-gray-400 group-focus-within/select:text-blue-500 transition-colors duration-300" />
                 </div>
               </div>
             </div>
@@ -367,7 +371,7 @@ function App() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full md:w-auto h-12 px-6 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm transition-all duration-300"
+                className="w-full md:w-auto h-12 px-8 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold tracking-wide"
               >
                 {loading ? (
                   <>
@@ -439,157 +443,180 @@ function App() {
         )}
 
         {stats && (
-          <div className="space-y-10 animate-fadeIn">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700 transition-colors duration-300 hover:shadow-lg">
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-blue-600" />
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                    Contributors
-                  </h2>
+          <div className="space-y-12 animate-fadeIn">
+            {/* Contributors Section */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700/50 transition-all duration-500 hover:shadow-2xl hover:border-blue-300 dark:hover:border-blue-700/50">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-blue-100 dark:bg-blue-900/40 rounded-xl">
+                    <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      Contributors
+                    </h2>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Active contributors in this repository
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Total Contributors</p>
-                  <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{stats.contributors.length}</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/30 dark:to-blue-900/10 p-5 rounded-2xl border border-blue-200 dark:border-blue-800/50 shadow-sm hover:shadow-md transition-all duration-300 group">
+                  <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Total Contributors</p>
+                  <p className="text-3xl font-black text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300">{stats.contributors.length}</p>
                 </div>
-                <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Lines Added</p>
-                  <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                <div className="bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/30 dark:to-green-900/10 p-5 rounded-2xl border border-green-200 dark:border-green-800/50 shadow-sm hover:shadow-md transition-all duration-300 group">
+                  <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Lines Added</p>
+                  <p className="text-3xl font-black text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform duration-300">
                     +{Object.values(codeStats).reduce((sum, s) => sum + s.additions, 0).toLocaleString()}
                   </p>
                 </div>
-                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Lines Deleted</p>
-                  <p className="text-lg font-bold text-red-600 dark:text-red-400">
+                <div className="bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/30 dark:to-red-900/10 p-5 rounded-2xl border border-red-200 dark:border-red-800/50 shadow-sm hover:shadow-md transition-all duration-300 group">
+                  <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Lines Deleted</p>
+                  <p className="text-3xl font-black text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform duration-300">
                     -{Object.values(codeStats).reduce((sum, s) => sum + s.deletions, 0).toLocaleString()}
                   </p>
                 </div>
-                <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Total Commits</p>
-                  <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-900/30 dark:to-purple-900/10 p-5 rounded-2xl border border-purple-200 dark:border-purple-800/50 shadow-sm hover:shadow-md transition-all duration-300 group">
+                  <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Total Commits</p>
+                  <p className="text-3xl font-black text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform duration-300">
                     {Object.values(codeStats).reduce((sum, s) => sum + s.commits, 0).toLocaleString()}
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {stats.contributors.map((contributor) => (
                   <button
                     key={contributor.username}
                     onClick={() => handleUserClick(contributor.username)}
-                    className="flex items-start gap-4 p-5 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 text-left border border-gray-100 dark:border-gray-700 group hover:shadow-md"
+                    className="flex flex-col items-start gap-4 p-6 bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-700/40 dark:to-gray-700/20 rounded-2xl hover:from-blue-50 hover:to-blue-100/50 dark:hover:from-blue-900/30 dark:hover:to-blue-900/20 transition-all duration-500 text-left border border-gray-200 dark:border-gray-700/50 group hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-700/50 hover:-translate-y-1"
                   >
-                    <div className="relative">
-                      <img
-                        src={contributor.avatarUrl}
-                        alt={contributor.username}
-                        className="w-14 h-14 rounded-full ring-2 ring-white dark:ring-gray-800 group-hover:ring-blue-500 transition-all duration-300"
-                      />
-                      <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-800 rounded-full p-1 border border-gray-200 dark:border-gray-700">
-                        <Github className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                    <div className="relative w-full">
+                      <div className="flex items-start gap-4">
+                        <div className="relative flex-shrink-0">
+                          <img
+                            src={contributor.avatarUrl}
+                            alt={contributor.username}
+                            className="w-16 h-16 rounded-2xl ring-3 ring-white dark:ring-gray-800 group-hover:ring-blue-400 transition-all duration-300 shadow-md group-hover:shadow-lg"
+                          />
+                          <div className="absolute -bottom-2 -right-2 bg-white dark:bg-gray-800 rounded-full p-1.5 border-2 border-gray-200 dark:border-gray-700 shadow-md group-hover:bg-blue-500 group-hover:border-blue-500 transition-all duration-300">
+                            <Github className="w-4 h-4 text-gray-700 dark:text-gray-300 group-hover:text-white transition-colors duration-300" />
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-lg text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 truncate">
+                            {contributor.username}
+                          </h3>
+                          <div className="flex items-center gap-2 flex-wrap mt-2">
+                            {contributor.isMaintainer ? (
+                              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-purple-100 to-purple-50 text-purple-700 dark:from-purple-900/40 dark:to-purple-900/20 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50 shadow-sm">
+                                <Shield className="w-3.5 h-3.5" />
+                                Maintainer
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 dark:from-blue-900/40 dark:to-blue-900/20 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50 shadow-sm">
+                                <Users className="w-3.5 h-3.5" />
+                                Contributor
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                          {contributor.username}
-                        </h3>
-                        {/* Force boolean evaluation to ensure deterministic rendering */}
-                        {contributor.isMaintainer ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
-                            <Shield className="w-3 h-3 mr-1" />
-                            Maintainer
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                            <Users className="w-3 h-3 mr-1" />
-                            Contributor
-                          </span>
-                        )}
+                    <div className="w-full grid grid-cols-2 gap-3 text-sm pt-2 border-t border-gray-200 dark:border-gray-700/50">
+                      <div className="flex items-center gap-2 group/stat">
+                        <GitPullRequest className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover/stat:scale-110 transition-transform duration-300" />
+                        <div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">PRs</p>
+                          <p className="font-bold text-gray-900 dark:text-white">{contributor.totalPRs}</p>
+                        </div>
                       </div>
-                      <div className="mt-3 grid grid-cols-2 gap-y-3 gap-x-2 text-sm">
-                        <div className="flex items-center gap-1.5">
-                          <GitPullRequest className="w-4 h-4 text-blue-600" />
-                          <span className="text-gray-700 dark:text-gray-300">
-                            {contributor.totalPRs} PRs
-                          </span>
+                      <div className="flex items-center gap-2 group/stat">
+                        <GitMerge className="w-4 h-4 text-green-600 dark:text-green-400 group-hover/stat:scale-110 transition-transform duration-300" />
+                        <div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Merged</p>
+                          <p className="font-bold text-gray-900 dark:text-white">{contributor.mergedPRs}</p>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                          <GitMerge className="w-4 h-4 text-green-600" />
-                          <span className="text-gray-700 dark:text-gray-300">
-                            {contributor.mergedPRs} merged
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <GitPullRequest className="w-4 h-4 text-yellow-600" />
-                          <span className="text-gray-700 dark:text-gray-300">
-                            {contributor.openPRs} open
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <GitPullRequestClosed className="w-4 h-4 text-red-600" />
-                          <span className="text-gray-700 dark:text-gray-300">
-                            {contributor.closedPRs} closed
-                          </span>
-                        </div>
-                        {codeStats[contributor.username] ? (
-                          <>
-                            <div className="flex items-center gap-1.5">
-                              <Plus className="w-4 h-4 text-green-600" />
-                              <span className="text-gray-700 dark:text-gray-300">
-                                +{codeStats[contributor.username].additions}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <Minus className="w-4 h-4 text-red-600" />
-                              <span className="text-gray-700 dark:text-gray-300">
-                                -{codeStats[contributor.username].deletions}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <BarChart2 className="w-4 h-4 text-blue-600" />
-                              <span className="text-gray-700 dark:text-gray-300">
-                                {codeStats[contributor.username].commits} commits
-                              </span>
-                            </div>
-                          </>
-                        ) : null}
                       </div>
+                      <div className="flex items-center gap-2 group/stat">
+                        <GitPullRequest className="w-4 h-4 text-yellow-600 dark:text-yellow-400 group-hover/stat:scale-110 transition-transform duration-300" />
+                        <div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Open</p>
+                          <p className="font-bold text-gray-900 dark:text-white">{contributor.openPRs}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 group/stat">
+                        <GitPullRequestClosed className="w-4 h-4 text-red-600 dark:text-red-400 group-hover/stat:scale-110 transition-transform duration-300" />
+                        <div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Closed</p>
+                          <p className="font-bold text-gray-900 dark:text-white">{contributor.closedPRs}</p>
+                        </div>
+                      </div>
+                      {codeStats[contributor.username] ? (
+                        <>
+                          <div className="flex items-center gap-2 group/stat">
+                            <Plus className="w-4 h-4 text-green-600 dark:text-green-400 group-hover/stat:scale-110 transition-transform duration-300" />
+                            <div>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">Added</p>
+                              <p className="font-bold text-gray-900 dark:text-white">+{codeStats[contributor.username].additions}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 group/stat">
+                            <Minus className="w-4 h-4 text-red-600 dark:text-red-400 group-hover/stat:scale-110 transition-transform duration-300" />
+                            <div>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">Deleted</p>
+                              <p className="font-bold text-gray-900 dark:text-white">-{codeStats[contributor.username].deletions}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 group/stat col-span-2">
+                            <BarChart2 className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover/stat:scale-110 transition-transform duration-300" />
+                            <div>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">Commits</p>
+                              <p className="font-bold text-gray-900 dark:text-white">{codeStats[contributor.username].commits}</p>
+                            </div>
+                          </div>
+                        </>
+                      ) : null}
                     </div>
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors duration-300 hover:shadow-lg">
+            {/* Pull Requests Section */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700/50 transition-all duration-500 hover:shadow-2xl hover:border-blue-300 dark:hover:border-blue-700/50">
               <button
                 onClick={togglePRs}
-                className="w-full p-6 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 border-b dark:border-gray-700 text-left focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-400"
+                className="w-full p-7 bg-gradient-to-r from-blue-50 via-blue-50/50 to-cyan-50/30 dark:from-blue-900/20 dark:via-blue-900/10 dark:to-cyan-900/10 border-b dark:border-gray-700/50 text-left focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 hover:from-blue-100 hover:to-cyan-100/50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/20 group"
               >
                 <div className="flex flex-wrap items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
-                    <GitPullRequest className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-blue-100 dark:bg-blue-900/40 rounded-xl group-hover:bg-blue-200 dark:group-hover:bg-blue-900/60 transition-colors duration-300">
+                      <GitPullRequest className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    </div>
                     <div>
-                      <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                      <h2 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                         Recent Pull Requests
                       </h2>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 font-medium">
                         Showing PRs from selected time period
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-sm bg-white dark:bg-gray-700 px-3 py-1.5 rounded-full shadow-sm text-gray-700 dark:text-gray-300">
-                      <span className="font-semibold">{stats.totalPRs}</span>{" "}
-                      pull requests
+                  <div className="flex items-center gap-4">
+                    <div className="text-sm bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-900/20 px-4 py-2 rounded-full shadow-sm text-gray-700 dark:text-gray-300 font-bold border border-blue-200 dark:border-blue-800/50">
+                      <span className="text-blue-600 dark:text-blue-400">{stats.totalPRs}</span>{" "}
+                      <span>pull requests</span>
                     </div>
-                    {showPRs ? (
-                      <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                    )}
+                    <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700/50 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 transition-colors duration-300">
+                      {showPRs ? (
+                        <ChevronUp className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300" />
+                      )}
+                    </div>
                   </div>
                 </div>
               </button>
@@ -612,16 +639,15 @@ function App() {
         )}
 
         {!stats && !loading && !error && (
-          <div className="mt-16 text-center">
-            <div className="mx-auto w-24 h-24 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-6">
-              <RefreshCw className="w-10 h-10 text-blue-500 dark:text-blue-400" />
+          <div className="mt-20 text-center py-16">
+            <div className="mx-auto w-32 h-32 bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-3xl flex items-center justify-center mb-8 shadow-lg">
+              <RefreshCw className="w-16 h-16 text-blue-500 dark:text-blue-400 opacity-60" />
             </div>
-            <h3 className="text-xl font-medium text-gray-800 dark:text-white mb-2">
+            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
               No data to display
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-              Enter a GitHub repository URL and select a time period to analyze
-              contributions and pull requests.
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed font-light">
+              Enter a GitHub repository URL and select a time period to analyze contributions and pull requests.
             </p>
           </div>
         )}
